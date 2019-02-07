@@ -1,0 +1,21 @@
+{
+    "name": "owenconti/remoteauth-php-sdk",
+    "description": "PHP SDK for RemoteAuth.",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Owen Conti",
+            "email": "owen@ohseemedia.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "RemoteAuthPhp\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
