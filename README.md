@@ -32,5 +32,5 @@ $client = new Client([
 
 The Client exposes the following methods:
 
-* `applicationMembersByToken()` - Returns the ApplicationMember records that exist between the User and the Application attached to the given token.
+* `applicationMembersByToken($user)` - Returns the ApplicationMember records that exist between the User and the Application attached to the given token.
 
