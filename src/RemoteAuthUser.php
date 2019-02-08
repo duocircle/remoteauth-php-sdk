@@ -9,21 +9,21 @@ interface RemoteAuthUser
      *
      * @return string
      */
-    public function oauthAccessToken(): string;
+    public function accessToken(): string;
 
     /**
      * Returns the User's refresh token.
      *
      * @return string
      */
-    public function oauthRefreshToken(): string;
+    public function refreshToken(): string;
 
     /**
      * Returns the date the access token expires.
      *
      * @return DateTime
      */
-    public function oauthAccessTokenExpiration(): \DateTime;
+    public function accessTokenExpiration(): \DateTime;
 
     /**
      * Callback function that will be called when refreshing the access token.

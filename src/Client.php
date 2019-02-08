@@ -121,7 +121,7 @@ class Client
             $response = $this->http->request($method, $url, [
                 'headers' => [
                     'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ' . $user->oauthAccessToken()
+                    'Authorization' => 'Bearer ' . $user->accessToken()
                 ],
                 'json' => !empty($payload) ? $payload : null
             ]);
@@ -135,7 +135,7 @@ class Client
                     $user,
                     [
                         'grant_type' => 'refresh_token',
-                        'refresh_token' => $user->oauthRefreshToken(),
+                        'refresh_token' => $user->refreshToken(),
                         'client_id' => $this->options['clientId'],
                         'client_secret' => $this->options['clientSecret'],
                         'scope' => $this->options['scope']
