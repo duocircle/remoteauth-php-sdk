@@ -5,6 +5,13 @@ namespace RemoteAuthPhp;
 interface RemoteAuthUser
 {
     /**
+     * Return's the User's ID.
+     *
+     * @return string
+     */
+    public function id(): string;
+
+    /**
      * Returns the User's access token.
      *
      * @return string
@@ -27,7 +34,7 @@ interface RemoteAuthUser
 
     /**
      * Callback function that will be called when refreshing the access token.
-     * 
+     *
      * @param string $accessToken
      * @param string $refreshToken
      * @param int $expiresIn

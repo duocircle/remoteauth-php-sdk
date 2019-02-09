@@ -4,6 +4,7 @@ namespace RemoteAuthPhp;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
+use Psr\SimpleCache\CacheInterface;
 
 class HttpClient
 {
@@ -13,17 +14,22 @@ class HttpClient
     /** @var GuzzleClient */
     private $http;
 
+    /** @var CacheInterface */
+    private $cache;
+
     /** @var bool */
     private $attemptingRefresh = false;
 
     /**
      * Creates a new RemoteAuthPhp Client.
-     * 
+     *
      * @param array $options
      */
-    public function __construct(array $options = [])
+    public function __construct(array $options = [], ?CacheInterface $cache = null)
     {
         $this->options = $options;
+
+        $this->cache = $cache;
         
         $this->http = new GuzzleClient();
     }
@@ -101,6 +107,12 @@ class HttpClient
     public function request(string $method, string $url, RemoteAuthUser $user, ?array $payload = [])
     {
         try {
+            $cacheKey = md5($user->id() . '-' . $method . '-' . $url . '-' . json_encode($payload));
+
+            if (!is_null($this->cache) && $this->cache->has($cacheKey)) {
+                return $this->cache->get($cacheKey);
+            }
+
             $response = $this->http->request($method, $url, [
                 'headers' => [
                     'Accept' => 'application/json',
@@ -110,9 +122,9 @@ class HttpClient
             ]);
         } catch (ClientException $e) {
             if ($e->getCode() === 401 && !$this->attemptingRefresh) {
+                // Request is unauthorized, use refresh token to get a new access token
                 $this->attemptingRefresh = true;
     
-                // Request is unauthorized, use refresh token to get a new access token
                 $response = $this->post(
                     $this->options['baseUrl'] . '/oauth/token',
                     $user,
@@ -130,7 +142,9 @@ class HttpClient
                 }
                 
                 $user->handleTokenRefresh(
-                    $response['access_token'], $response['refresh_token'], $response['expires_in']
+                    $response['access_token'],
+                    $response['refresh_token'],
+                    $response['expires_in']
                 );
     
                 $this->attemptingRefresh = false;
@@ -144,12 +158,18 @@ class HttpClient
             ];
         }
 
-        return json_decode((string)$response->getBody(), true);
+        $result = json_decode((string)$response->getBody(), true);
+
+        if (!is_null($this->cache)) {
+            $this->cache->set($cacheKey, $result);
+        }
+            
+        return $result;
     }
 
     /**
      * Helper function to generate the URL to call.
-     * 
+     *
      * @param string $url
      * @return string
      */
