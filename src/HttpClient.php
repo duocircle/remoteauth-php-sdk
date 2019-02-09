@@ -107,7 +107,7 @@ class HttpClient
     public function request(string $method, string $url, RemoteAuthUser $user, ?array $payload = [])
     {
         try {
-            $cacheKey = md5($user->id() . '-' . $method . '-' . $url . '-' . json_encode($payload));
+            $cacheKey = md5($user->remoteAuthUserId() . '-' . $method . '-' . $url . '-' . json_encode($payload));
 
             if (!is_null($this->cache) && $this->cache->has($cacheKey)) {
                 return $this->cache->get($cacheKey);

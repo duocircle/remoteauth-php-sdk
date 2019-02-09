@@ -9,7 +9,7 @@ interface RemoteAuthUser
      *
      * @return string
      */
-    public function id(): string;
+    public function remoteAuthUserId(): string;
 
     /**
      * Returns the User's access token.
