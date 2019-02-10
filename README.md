@@ -18,7 +18,7 @@ $client = new Client([
     'clientId' => 'XXX',
     'clientSecret' => 'XXX',
     'scope' => ''
-]);
+], $cache);
 ```
 
 #### Options
@@ -27,6 +27,10 @@ $client = new Client([
 * **clientId** - The Client ID of your OAuth Client. This can be obtained from within the RemoteAuth UI.
 * **clientSecret** - The Client Secret of your OAuth Client. This can be obtained from within the RemoteAuth UI.
 * **scope** - The scopes you'd like to request when an access token is refreshed.
+
+`$cache` parameter:
+
+The second argument to the `Client` constructor is an optional argument that must be an instance of `Psr\SimpleCache\CacheInterface`.
 
 ## Methods
 
