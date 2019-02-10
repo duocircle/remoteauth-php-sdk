@@ -34,7 +34,7 @@ The second argument to the `Client` constructor is an optional argument that mus
 
 ## Methods
 
-The Client exposes the following methods:
+The Client exposes the following methods. All methods must be passed the `RemoteAuthUser` you are authenticating as. Optional arguments for payload and ignoring cached request results.
 
-* `applicationMembersByToken($user)` - Returns the ApplicationMember records that exist between the User and the Application attached to the given token.
+* `applicationMembersByToken($user, $ignoreCache)` - Returns the ApplicationMember records that exist between the User and the Application attached to the given token.
 
