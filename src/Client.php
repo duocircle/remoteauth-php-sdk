@@ -35,11 +35,12 @@ class Client
      * @param RemoteAuthUser $user
      * @return array
      */
-    public function applicationMembersByToken(RemoteAuthUser $user)
+    public function applicationMembersByToken(RemoteAuthUser $user, ?bool $ignoreCache = false)
     {
         return $this->httpClient->get(
             $this->httpClient->url('users/applicationMembers/byToken'),
-            $user
+            $user,
+            $ignoreCache
         );
     }
 }

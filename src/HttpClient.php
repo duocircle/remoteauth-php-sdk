@@ -43,9 +43,9 @@ class HttpClient
      * @param RemoteAuthUser $user
      * @return array
      */
-    public function get(string $url, RemoteAuthUser $user)
+    public function get(string $url, RemoteAuthUser $user, ?bool $ignoreCache = false)
     {
-        return $this->request('GET', $url, $user);
+        return $this->request('GET', $url, $user, null, $ignoreCache);
     }
 
     /**
@@ -58,9 +58,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function post(string $url, RemoteAuthUser $user, ?array $payload = [])
+    public function post(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
     {
-        return $this->request('POST', $url, $user, $payload);
+        return $this->request('POST', $url, $user, $payload, $ignoreCache);
     }
 
     /**
@@ -73,9 +73,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function put(string $url, RemoteAuthUser $user, ?array $payload = [])
+    public function put(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
     {
-        return $this->request('PUT', $url, $user, $payload);
+        return $this->request('PUT', $url, $user, $payload, $ignoreCache);
     }
 
     /**
@@ -88,9 +88,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function delete(string $url, RemoteAuthUser $user, ?array $payload = [])
+    public function delete(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
     {
-        return $this->request('DELETE', $url, $user, $payload);
+        return $this->request('DELETE', $url, $user, $payload, $ignoreCache);
     }
 
     /**
@@ -104,12 +104,12 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function request(string $method, string $url, RemoteAuthUser $user, ?array $payload = [])
+    public function request(string $method, string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
     {
         try {
             $cacheKey = md5($user->remoteAuthUserId() . '-' . $method . '-' . $url . '-' . json_encode($payload));
 
-            if (!is_null($this->cache) && $this->cache->has($cacheKey)) {
+            if (!$ignoreCache && !is_null($this->cache) && $this->cache->has($cacheKey)) {
                 return $this->cache->get($cacheKey);
             }
 
