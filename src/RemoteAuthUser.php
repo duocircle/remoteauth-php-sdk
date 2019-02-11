@@ -35,10 +35,11 @@ interface RemoteAuthUser
     /**
      * Callback function that will be called when refreshing the access token.
      *
+     * @param string $userId
      * @param string $accessToken
      * @param string $refreshToken
      * @param int $expiresIn
      * @return void
      */
-    public function handleTokenRefresh(string $accessToken, string $refreshToken, int $expiresIn): void;
+    public function handleTokenRefresh(string $userId, string $accessToken, string $refreshToken, int $expiresIn): void;
 }

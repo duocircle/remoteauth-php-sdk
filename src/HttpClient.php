@@ -142,6 +142,7 @@ class HttpClient
                 }
                 
                 $user->handleTokenRefresh(
+                    $response['id'],
                     $response['access_token'],
                     $response['refresh_token'],
                     $response['expires_in']
