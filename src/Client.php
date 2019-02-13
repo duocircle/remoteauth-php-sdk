@@ -73,7 +73,7 @@ class Client
     public function rolesByApplicationMember(string $applicationMemberId, RemoteAuthUser $user, ?bool $ignoreCache = false)
     {
         return $this->httpClient->get(
-            $this->httpClient->url("applicationMembers/${applicationMemberId}/roles'),
+            $this->httpClient->url("applicationMembers/${applicationMemberId}/roles"),
             $user,
             $ignoreCache
         );
