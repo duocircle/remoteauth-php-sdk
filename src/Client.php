@@ -33,12 +33,47 @@ class Client
      * the token's User and the Application the token belongs to.
      *
      * @param RemoteAuthUser $user
+     * @param bool $ignoreCache
      * @return array
      */
     public function applicationMembersByToken(RemoteAuthUser $user, ?bool $ignoreCache = false)
     {
         return $this->httpClient->get(
             $this->httpClient->url('users/applicationMembers/byToken'),
+            $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * Returns the Permissions attached to the given ApplicationMember.
+     *
+     * @param string $applicationMemberId
+     * @param RemoteAuthUser $user
+     * @param bool $ignoreCache
+     * @return array
+     */
+    public function permissionsByApplicationMember(string $applicationMemberId, RemoteAuthUser $user, ?bool $ignoreCache = false)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url("applicationMembers/${applicationMemberId}/permissions"),
+            $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * Returns the Roles attached to the given ApplicationMember.
+     *
+     * @param string $applicationMemberId
+     * @param RemoteAuthUser $user
+     * @param bool $ignoreCache
+     * @return array
+     */
+    public function rolesByApplicationMember(string $applicationMemberId, RemoteAuthUser $user, ?bool $ignoreCache = false)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url("applicationMembers/${applicationMemberId}/roles'),
             $user,
             $ignoreCache
         );
