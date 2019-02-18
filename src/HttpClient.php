@@ -5,6 +5,7 @@ namespace RemoteAuthPhp;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Psr\SimpleCache\CacheInterface;
+use Carbon\Carbon;
 
 class HttpClient
 {
@@ -162,7 +163,7 @@ class HttpClient
         $result = json_decode((string)$response->getBody(), true);
 
         if (!is_null($this->cache)) {
-            $this->cache->set($cacheKey, $result);
+            $this->cache->set($cacheKey, $result, Carbon::now()->addHour(1));
         }
             
         return $result;
