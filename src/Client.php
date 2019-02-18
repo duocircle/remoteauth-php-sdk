@@ -85,8 +85,7 @@ class Client
         return $this->httpClient->post(
             $this->httpClient->url('applicationMembers'),
             $user,
-            $payload,
-            $ignoreCache
+            $payload
         );
     }
 
@@ -159,8 +158,7 @@ class Client
         return $this->httpClient->post(
             $this->httpClient->url('teams'),
             $user,
-            $payload,
-            $ignoreCache
+            $payload
         );
     }
 }
