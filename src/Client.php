@@ -29,6 +29,10 @@ class Client
     }
 
     /**
+     * !! Application Members
+     */
+
+    /**
      * Returns the ApplicationMember relationships between
      * the token's User and the Application the token belongs to.
      *
@@ -41,6 +45,47 @@ class Client
         return $this->httpClient->get(
             $this->httpClient->url('users/applicationMembers/byToken'),
             $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * Returns the ApplicationMember (Team <> Application) relationships
+     * between the given Application and the Teams the User is a member of.
+     *
+     * @param RemoteAuthUser $user
+     * @param string $applicationId
+     * @param bool $ignoreCache
+     * @return array
+     */
+    public function teamMembershipsByApplication(RemoteAuthUser $user, string $applicationId, ?bool $ignoreCache = false)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url("users/applicationMembers/teamMemberships/{$applicationId}"),
+            $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * Creates a new ApplicationMember. Payload accepts:
+     *
+     * - application_id
+     * - user_id (optional)
+     * - team_id (optional)
+     *
+     * At least one of `user_id` or `team_id` must be specified.
+     *
+     * @param RemoteAuthUser $user
+     * @param array $payload
+     * @return array
+     */
+    public function createApplicationMember(RemoteAuthUser $user, array $payload = [])
+    {
+        return $this->httpClient->post(
+            $this->httpClient->url('applicationMembers'),
+            $user,
+            $payload,
             $ignoreCache
         );
     }
@@ -75,6 +120,46 @@ class Client
         return $this->httpClient->get(
             $this->httpClient->url("applicationMembers/${applicationMemberId}/roles"),
             $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * !! Teams
+     */
+
+    /**
+     * Lists the Teams the User is a member of.
+     *
+     * @param RemoteAuthUser $user
+     * @param bool $ignoreCache
+     * @return array
+     */
+    public function teams(RemoteAuthUser $user, ?bool $ignoreCache = false)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url('teams'),
+            $user,
+            $ignoreCache
+        );
+    }
+
+    /**
+     * Creates a new Team. Payload accepts:
+     *
+     * - name
+     * - slug
+     *
+     * @param RemoteAuthUser $user
+     * @param array $payload
+     * @return array
+     */
+    public function createTeam(RemoteAuthUser $user, array $payload = [])
+    {
+        return $this->httpClient->post(
+            $this->httpClient->url('teams'),
+            $user,
+            $payload,
             $ignoreCache
         );
     }

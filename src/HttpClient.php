@@ -58,9 +58,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function post(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
+    public function post(string $url, RemoteAuthUser $user, ?array $payload = [])
     {
-        return $this->request('POST', $url, $user, $payload, $ignoreCache);
+        return $this->request('POST', $url, $user, $payload);
     }
 
     /**
@@ -73,9 +73,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function put(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
+    public function put(string $url, RemoteAuthUser $user, ?array $payload = [])
     {
-        return $this->request('PUT', $url, $user, $payload, $ignoreCache);
+        return $this->request('PUT', $url, $user, $payload);
     }
 
     /**
@@ -88,9 +88,9 @@ class HttpClient
      * @param array $payload
      * @return array
      */
-    public function delete(string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
+    public function delete(string $url, RemoteAuthUser $user, ?array $payload = [])
     {
-        return $this->request('DELETE', $url, $user, $payload, $ignoreCache);
+        return $this->request('DELETE', $url, $user, $payload);
     }
 
     /**
