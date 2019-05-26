@@ -68,6 +68,20 @@ class Client
     }
 
     /**
+     * Returns the specified ApplicationMember.
+     *
+     * @param RemoteAuthUser $user
+     * @param string $applicationMemberId
+     */
+    public function getApplicationMember(RemoteAuthUser $user, string $applicationMemberId)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url("applicationMembers/{$applicationMemberId}"),
+            $user
+        );
+    }
+
+    /**
      * Creates a new ApplicationMember. Payload accepts:
      *
      * - application_id
@@ -92,12 +106,12 @@ class Client
     /**
      * Returns the Permissions attached to the given ApplicationMember.
      *
-     * @param string $applicationMemberId
      * @param RemoteAuthUser $user
+     * @param string $applicationMemberId
      * @param bool $ignoreCache
      * @return array
      */
-    public function permissionsByApplicationMember(string $applicationMemberId, RemoteAuthUser $user, ?bool $ignoreCache = false)
+    public function permissionsByApplicationMember(RemoteAuthUser $user, string $applicationMemberId, ?bool $ignoreCache = false)
     {
         return $this->httpClient->get(
             $this->httpClient->url("applicationMembers/${applicationMemberId}/permissions"),
@@ -109,12 +123,12 @@ class Client
     /**
      * Returns the Roles attached to the given ApplicationMember.
      *
-     * @param string $applicationMemberId
      * @param RemoteAuthUser $user
+     * @param string $applicationMemberId
      * @param bool $ignoreCache
      * @return array
      */
-    public function rolesByApplicationMember(string $applicationMemberId, RemoteAuthUser $user, ?bool $ignoreCache = false)
+    public function rolesByApplicationMember(RemoteAuthUser $user, string $applicationMemberId, ?bool $ignoreCache = false)
     {
         return $this->httpClient->get(
             $this->httpClient->url("applicationMembers/${applicationMemberId}/roles"),
