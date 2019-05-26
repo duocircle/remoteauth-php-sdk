@@ -109,8 +109,9 @@ class HttpClient
     {
         try {
             $cacheKey = md5($user->remoteAuthUserId() . '-' . $method . '-' . $url . '-' . json_encode($payload));
+            $isCacheAvailable = strtoupper($method) === 'GET' && !is_null($this->cache);
 
-            if (strtolower($method) === 'GET' && !$ignoreCache && !is_null($this->cache) && $this->cache->has($cacheKey)) {
+            if ($isCacheAvailable && !$ignoreCache && $this->cache->has($cacheKey)) {
                 return $this->cache->get($cacheKey);
             }
 
@@ -162,7 +163,7 @@ class HttpClient
 
         $result = json_decode((string)$response->getBody(), true);
 
-        if (strtolower($method) === 'get' && !is_null($this->cache)) {
+        if ($isCacheAvailable) {
             $this->cache->set($cacheKey, $result, Carbon::now()->addHour(1));
         }
             
