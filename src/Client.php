@@ -138,6 +138,23 @@ class Client
     }
 
     /**
+     * Returns the Subscription attached to the given ApplicationMember.
+     *
+     * @param RemoteAuthUser $user
+     * @param string $applicationMemberId
+     * @param bool $ignoreCache
+     * @return array
+    */
+    public function subscriptionByApplicationMember(RemoteAuthUser $user, string $applicationMemberId, ?bool $ignoreCache = false)
+    {
+        return $this->httpClient->get(
+            $this->httpClient->url("applicationMembers/${applicationMemberId}/subscription"),
+            $user,
+            $ignoreCache
+        );
+    }
+
+    /**
      * !! Teams
      */
 
