@@ -26,13 +26,19 @@ class HttpClient
      *
      * @param array $options
      */
-    public function __construct(array $options = [], ?CacheInterface $cache = null)
-    {
+    public function __construct(
+        array $options = [],
+        ?CacheInterface $cache = null,
+        ?GuzzleClient $http = null
+    ) {
         $this->options = $options;
 
         $this->cache = $cache;
-        
-        $this->http = new GuzzleClient();
+
+        if (is_null($http)) {
+            $http = new GuzzleClient();
+        }
+        $this->http = $http;
     }
 
     /**
@@ -108,7 +114,7 @@ class HttpClient
     public function request(string $method, string $url, RemoteAuthUser $user, ?array $payload = [], ?bool $ignoreCache = false)
     {
         try {
-            $cacheKey = md5($user->remoteAuthUserId() . '-' . $method . '-' . $url . '-' . json_encode($payload));
+            $cacheKey = $this->getCacheKey($user, $method, $url, $payload);
             $isCacheAvailable = strtoupper($method) === 'GET' && !is_null($this->cache);
 
             if ($isCacheAvailable && !$ignoreCache && $this->cache->has($cacheKey)) {
@@ -155,13 +161,24 @@ class HttpClient
                 return $this->request($method, $url, $user, $payload);
             }
 
+            $errorMessage = 'An unknown error occurred.';
+
+            if ($e && $e->getResponse()) {
+                $errorMessage = (string)$e->getResponse()->getBody();
+            }
+
             return [
                 'error' => true,
-                'message' => (string)$e->getResponse()->getBody()
+                'message' => $errorMessage
             ];
         }
+        
+        $responseBody = null;
+        if ($response) {
+            $responseBody = (string)$response->getBody();
+        }
 
-        $result = json_decode((string)$response->getBody(), true);
+        $result = json_decode($responseBody, true);
 
         if ($isCacheAvailable) {
             $this->cache->set($cacheKey, $result, Carbon::now()->addHour(1));
@@ -179,5 +196,19 @@ class HttpClient
     public function url(string $url)
     {
         return $this->options['baseUrl'] . '/api/v1/' . $url;
+    }
+
+    /**
+     * Builds the cache key for caching GET requests.
+     *
+     * @param RemoteAuthUser $user
+     * @param string $method
+     * @param string $url
+     * @param array $payload
+     * @return string
+     */
+    public function getCacheKey(RemoteAuthUser $user, string $method, string $url, ?array $payload = [])
+    {
+        return md5($user->remoteAuthUserId() . '-' . $method . '-' . $url . '-' . json_encode($payload));
     }
 }

@@ -2,8 +2,6 @@
 
 namespace RemoteAuthPhp;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
 use Psr\SimpleCache\CacheInterface;
 
 class Client
