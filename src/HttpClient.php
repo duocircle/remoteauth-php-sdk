@@ -153,7 +153,8 @@ class HttpClient
                     $response['id'],
                     $response['access_token'],
                     $response['refresh_token'],
-                    $response['expires_in']
+                    $response['expires_in'],
+                    $response['user']['email_verified_at']
                 );
     
                 $this->attemptingRefresh = false;

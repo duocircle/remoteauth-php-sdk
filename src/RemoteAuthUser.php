@@ -39,7 +39,8 @@ interface RemoteAuthUser
      * @param string $accessToken
      * @param string $refreshToken
      * @param int $expiresIn
+     * @param array $user
      * @return void
      */
-    public function handleTokenRefresh(string $userId, string $accessToken, string $refreshToken, int $expiresIn): void;
+    public function handleTokenRefresh(string $userId, string $accessToken, string $refreshToken, int $expiresIn, ?array $user): void;
 }
