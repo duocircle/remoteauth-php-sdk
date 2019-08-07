@@ -1,5 +1,5 @@
 {
-  "name": "owenconti/remoteauth-php-sdk",
+  "name": "duocircle/remoteauth-php-sdk",
   "description": "PHP SDK for RemoteAuth.",
   "type": "library",
   "require": {
@@ -14,8 +14,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Owen Conti",
-      "email": "owen@ohseemedia.com"
+      "name": "DuoCircle",
+      "email": "remoteauth@duocircle.com"
     }
   ],
   "autoload": {
